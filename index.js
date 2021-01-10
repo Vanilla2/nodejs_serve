@@ -21,7 +21,7 @@ fs.readdir(directoryPath, (err, paths) => {
         <ul>
             ${files.map(x => `
                 <li>
-                    <a href = /${x} download>
+                    <a href = /${encodeURI(x)} download>
                         ${x}
                     </a>
                 </li>
