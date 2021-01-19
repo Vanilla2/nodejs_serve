@@ -8,16 +8,27 @@ const dir = process.env.SERVE_DIR;
 const type = process.env.TYPE;
 const directoryPath = path.join(dir);
 
-const solveStatic = () => {
+const solveStatic = (type) => {
     app.get('*', (req, res) => {
         fs.readFile(`${dir}${req.url}`, (err, data) => {
             if (err) {
-                res.write("file not found.");
+                if (type === "website" && req.url.split('.').length !== 2){
+                    fs.readFile(`${dir}/index.html`, (err, data) => {
+                        res.writeHead(200, {'Content-Type': 'text/html'});
+                        res.write(data);
+                        return res.end();
+                    })
+                }
+                else{
+                    res.writeHead(404);
+                    return res.end();
+                }
+            }
+            else {
+                res.writeHead(200);
+                res.write(data);
                 return res.end();
             }
-            res.writeHead(200);
-            res.write(data);
-            return res.end();
         })
     });
 }
@@ -55,7 +66,7 @@ const website = (files) => {
             return res.end();
         })
     })
-    solveStatic();
+    solveStatic("website");
 }
 
 fs.readdir(directoryPath, (err, paths) => {
