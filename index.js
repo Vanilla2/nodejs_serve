@@ -12,7 +12,6 @@ const solveStatic = (type) => {
     app.get('*', (req, res) => {
         fs.readFile(`${dir}${req.url}`, (err, data) => {
             if (err) {
-                console.log(req.url.split('.').length);
                 if (type === "website" && req.url.split('.').length === 1){
                     fs.readFile(`${dir}/index.html`, (err, data) => {
                         res.writeHead(200, {'Content-Type': 'text/html'});
