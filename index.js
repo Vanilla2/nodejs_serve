@@ -78,7 +78,9 @@ fs.readdir(directoryPath, (err, paths) => {
     }
 
     app.use((req, res, next) => {
-        console.log(`[LOG]: ${req.hostname} made request on: ${req.url}`);
+	    let date = new Date(Date.now()).toString().split(' ');
+	    let format = `${date[0]}-${date[1]}-${date[2]}-${date[3]}-${date[4]}`;
+  	  console.log(`[BACKEND]: ${format} from ${req.headers['x-forwarded-for'] || req.connection.remoteAddress}`);
         next();
     })
 
